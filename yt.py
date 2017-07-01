@@ -3,7 +3,7 @@ import os
 import pafy
 import re
 
-yt_api_key="AIzaSyAucnOGE-CIhdCXYt6pzA2ERG7OhMlMgqk"
+yt_api_key="<youtube-api-key>"
 
 api_uri = "https://www.googleapis.com/youtube/v3/search?part=snippet&q={}&type=video&key={}"
 
