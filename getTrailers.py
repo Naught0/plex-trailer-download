@@ -33,11 +33,14 @@ for x in range(len(movie_name_list)):
             "Pre-existing trailer for {}. Skipping...".format(movie_name_list[x]))
         continue
 
-    vid_nfo = yt.get_video_info(
-        "{} trailer".format(movie_name_list[x]), append)
-    watch_url = yt.get_watch_url(vid_nfo["id"])
+    # Store trailer information in vid_nfo
+    vid_nfo = yt.get_snippet_info(
+        "{} trailer".format(movie_name_list[x]), title_append=append)
 
-    # Tries to find a matching video
+    # Get watch_url from video's youtube ID
+    watch_url = yt.get_watch_url(vid_nfo[0]["id"])
+
+    # Tries to download a matching video
     try:
         # re.sub removes characters not allowed in filenames on Windows
         yt.download_video(watch_url, re.sub(

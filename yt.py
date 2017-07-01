@@ -9,7 +9,7 @@ with open("apikey") as f:
 api_uri = "https://www.googleapis.com/youtube/v3/search?part=snippet&q={}&type=video&key={}"
 
 
-def get_video_info(query: str, title_append="") -> dict:
+def get_snippet_info(query: str, title_append="", num_results=1, thumb_quality=0) -> dict:
     """ 
     Retrives video ID from the youtube API 
 
@@ -20,15 +20,37 @@ def get_video_info(query: str, title_append="") -> dict:
         be labeled with '-trailer'
     """
 
+    # 0: High
+    # 1: Medium
+    # 2: Default (low)
+    thumb_quality_list = ["high", "medium", "default"]
+
+    # Queries must be space delimited
     query = query.replace(" ", "+")
-    result = requests.get(api_uri.format(query, yt_api_key)).json()
 
-    return result
+    # Call to youtube snippet API
+    call_result = requests.get(api_uri.format(query, yt_api_key)).json()
 
-    # video_id = result["items"][0]["id"]["videoId"]
-    # raw_title = result["items"][0]["snippet"]["title"]
+    # Store gathered information in a dict
+    result_dict = {}
 
-    # return {"id" : video_id, "title" : raw_title + title_append}
+    # This bit is horrific (thanks Google):
+    # The Dictionary format is as follows:
+    # video_index :
+    # {
+    #   video_id: video's youtube ID
+    #   title: title + appended string (optional)
+    #   thumbnail_url: url of thumbnail of selected quality
+    # }
+    for x in range(num_results):
+        result_dict[x] = {
+            "video_id": result_dict[call_result["items"][x]["id"]["videoId"]],
+            "title": call_result["items"][x]["snippet"]["title"] + title_append,
+            "description": call_result["items"][x]["snippet"]["description"],
+            "thumb_url": call_result["items"][x]["snippet"]["thumbnails"][thumb_quality_list[thumb_quality]]["url"]
+        }
+
+    return result_dict
 
 
 def get_watch_url(video_id: str) -> str:
