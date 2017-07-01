@@ -7,7 +7,7 @@ import re
 # Global Vars
 append = "-trailer" # Plex requires this
 movie_dir = "X:/Videos/Movies/" # My movie directory
-movie_name_list = os.listdir(movie_dir) # My directories are named {Title} {(Year)} -> this is required
+movie_name_list = os.listdir(movie_dir) # All movies must be in separate directories
 
 # Empty lists for later
 movie_dir_list = [] 
