@@ -39,13 +39,6 @@ for x in range(len(movie_name_list)):
         print("Fatal error downloading trailer for {}. Skipping...".format(vid_nfo["title"]))
         continue
 
-# Cleanup
-raw_glob_list = []
-for x in range(len(movie_name_list)):
-    raw_glob_list = glob.glob("{}*.temp".format(movie_dir_list[x]))
-print(raw_glob_list)
-
-
 if len(missing_trailer_list) == 0 and len(downloaded_trailer_list) == 0:
     print("-----------------------------------------------------------")
     print("Done. All trailers up to date.")
