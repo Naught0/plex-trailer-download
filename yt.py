@@ -37,14 +37,12 @@ def get_snippet_info(query: str, title_append="", num_results=1, thumb_quality=0
     # This bit is horrific (thanks Google):
     # The Dictionary format is as follows:
     # video_index :
-    # {
-    #   video_id: video's youtube ID
-    #   title: title + appended string (optional)
-    #   thumbnail_url: url of thumbnail of selected quality
-    # }
+    #   video_id -> video's youtube ID
+    #   title -> title + appended string (optional)
+    #   thumbnail_url -> url of thumbnail of selected quality
     for x in range(num_results):
         result_dict[x] = {
-            "video_id": result_dict[call_result["items"][x]["id"]["videoId"]],
+            "video_id": call_result["items"][x]["id"]["videoId"],
             "title": call_result["items"][x]["snippet"]["title"] + title_append,
             "description": call_result["items"][x]["snippet"]["description"],
             "thumb_url": call_result["items"][x]["snippet"]["thumbnails"][thumb_quality_list[thumb_quality]]["url"]
