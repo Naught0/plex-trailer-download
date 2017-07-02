@@ -45,7 +45,6 @@ for x in range(len(movie_name_list)):
 
         # Save which trailers were downloaded for later
         downloaded_trailer_list.append(movie_name_list[x])
-
         print("Downloaded trailer for {}. Success!".format(movie_name_list[x]))
 
     # No videos found / malfunction
@@ -62,16 +61,23 @@ if len(missing_trailer_list) == 0 and len(downloaded_trailer_list) == 0:
     print("Done. All trailers up to date.")
     print("-----------------------------------------------------------")
 
-# If some trailers failed / were updated
-else:
+# Some trailers were downloaded
+if len(downloaded_trailer_list) > 0:
     print("-----------------------------------------------------------")
     print("Downloaded {} trailers for:".format(len(downloaded_trailer_list)))
     print("-----------------------------------------------------------")
     for x in range(len(downloaded_trailer_list)):
         print(downloaded_trailer_list[x])
+
+# Some trailers weren't found
+if len(missing_trailer_list) > 0:
+    print("-----------------------------------------------------------")
     print("Unable to find {} trailers for:".format(len(missing_trailer_list)))
     print("-----------------------------------------------------------")
     for x in range(len(missing_trailer_list)):
         print(missing_trailer_list[x])
-    print("Total download time: {} seconds".format(time.clock() - start_time))
-    print("-----------------------------------------------------------")
+
+# Total run time
+print("-----------------------------------------------------------")
+print("Total run time: {:.2} seconds".format(time.clock() - start_time))
+print("-----------------------------------------------------------")
