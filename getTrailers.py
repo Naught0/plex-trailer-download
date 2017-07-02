@@ -40,7 +40,8 @@ for x in range(len(movie_name_list)):
     # Tries to download a matching video
     try:
         # re.sub removes characters not allowed in filenames on Windows
-        yt.download_video(video_info[0]["video_url"], movie_name_list[x] + append, directory=movie_dir_list[x])
+        yt.download_video(
+            video_info[0]["video_url"], movie_name_list[x] + append, directory=movie_dir_list[x])
 
         # Save which trailers were downloaded for later
         downloaded_trailer_list.append(movie_name_list[x])

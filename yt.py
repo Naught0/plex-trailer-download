@@ -25,11 +25,13 @@ def get_video_info(query: str, title_append="", num_results=1, thumb_quality=0) 
 
     # Youtube API returns 5 results per page
     if not isinstance(num_results, int) or (1 < num_results > 5):
-        raise ValueError("Number of results must be an int between 1 and 5 inclusive.")
+        raise ValueError(
+            "Number of results must be an int between 1 and 5 inclusive.")
 
     # There are only 3 thumb qualities
     if not isinstance(thumb_quality, int) or (0 < thumb_quality > 2):
-        raise ValueError("Thumb quality must be an int between 0 and 2 inclusive.")
+        raise ValueError(
+            "Thumb quality must be an int between 0 and 2 inclusive.")
 
     # 0: High
     # 1: Medium
@@ -70,6 +72,7 @@ def _get_watch_url(video_id: str) -> str:
 
     return "https://www.youtube.com/watch?v={}".format(video_id)
 
+
 def _get_video_views(video_url):
     video = pafy.new(video_url)
 
@@ -84,6 +87,7 @@ def _get_video_views(video_url):
 #         stream_dict[s.resolution] = {"type": s.extension, "size": s.get_filesize()}
 
 #     return stream_dict
+
 
 def download_video(video_url, video_title, directory=os.getcwd()):
     """ Uses pafy to download the video """
