@@ -9,7 +9,7 @@ with open("apikey") as f:
 api_uri = "https://www.googleapis.com/youtube/v3/search?part=snippet&q={}&type=video&key={}"
 
 
-def get_snippet_info(query: str, title_append="", num_results=1, thumb_quality=0) -> dict:
+def get_video_info(query: str, title_append="", num_results=1, thumb_quality=0) -> dict:
     """ 
     Retrives video ID from the youtube API 
 
@@ -18,6 +18,10 @@ def get_snippet_info(query: str, title_append="", num_results=1, thumb_quality=0
     title_append: for appending things to the title of the video
         e.g. If you're using Plex Media Server and trailers must
         be labeled with '-trailer'
+
+    num_results: int 1 - 5 (youtube gives 5 results per page)
+
+    thumb_quality: 0 - 2 (highest to lowest quality)
     """
 
     # 0: High
@@ -40,22 +44,39 @@ def get_snippet_info(query: str, title_append="", num_results=1, thumb_quality=0
     #   video_id -> video's youtube ID
     #   title -> title + appended string (optional)
     #   thumbnail_url -> url of thumbnail of selected quality
+    #   views -> video views
     for x in range(num_results):
         result_dict[x] = {
             "video_id": call_result["items"][x]["id"]["videoId"],
             "title": call_result["items"][x]["snippet"]["title"] + title_append,
             "description": call_result["items"][x]["snippet"]["description"],
+            "views": _get_video_views(_get_watch_url(call_result["items"][x]["id"]["videoId"])),
+            "video_url": _get_watch_url(call_result["items"][x]["id"]["videoId"]),
             "thumb_url": call_result["items"][x]["snippet"]["thumbnails"][thumb_quality_list[thumb_quality]]["url"]
         }
 
     return result_dict
 
 
-def get_watch_url(video_id: str) -> str:
+def _get_watch_url(video_id: str) -> str:
     """ Creates watchable / downloadable URL from video's ID """
 
     return "https://www.youtube.com/watch?v={}".format(video_id)
 
+def _get_video_views(video_url):
+    video = pafy.new(video_url)
+
+    return video.viewcount
+
+# This will get video resolution, extension and size
+# def get_file_info(video_url):
+#     video = pafy.new(video_url)
+#     streams = video.streams
+#     stream_dict = {}
+#     for s in streams:
+#         stream_dict[s.resolution] = {"type": s.extension, "size": s.get_filesize()}
+
+#     return stream_dict
 
 def download_video(video_url, video_title, directory=os.getcwd()):
     """ Uses pafy to download the video """
