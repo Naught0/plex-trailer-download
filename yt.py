@@ -1,7 +1,6 @@
 import requests
 import os
 import pafy
-import re
 
 with open("apikey") as f:
     yt_api_key = f.read()
@@ -23,6 +22,14 @@ def get_video_info(query: str, title_append="", num_results=1, thumb_quality=0) 
 
     thumb_quality: 0 - 2 (highest to lowest quality)
     """
+
+    # Youtube API returns 5 results per page
+    if not isinstance(num_results, int) or (1 < num_results > 5):
+        raise ValueError("Number of results must be an int between 1 and 5 inclusive.")
+
+    # There are only 3 thumb qualities
+    if not isinstance(thumb_quality, int) or (0 < thumb_quality > 2):
+        raise ValueError("Thumb quality must be an int between 0 and 2 inclusive.")
 
     # 0: High
     # 1: Medium

@@ -65,12 +65,12 @@ if len(missing_trailer_list) == 0 and len(downloaded_trailer_list) == 0:
 else:
     print("-----------------------------------------------------------")
     print("Downloaded {} trailers for:".format(len(downloaded_trailer_list)))
+    print("-----------------------------------------------------------")
     for x in range(len(downloaded_trailer_list)):
         print(downloaded_trailer_list[x])
-    print("-----------------------------------------------------------")
     print("Unable to find {} trailers for:".format(len(missing_trailer_list)))
     print("-----------------------------------------------------------")
     for x in range(len(missing_trailer_list)):
         print(missing_trailer_list[x])
-    print("-----------------------------------------------------------")
     print("Total download time: {} seconds".format(time.clock() - start_time))
+    print("-----------------------------------------------------------")
