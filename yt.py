@@ -1,9 +1,10 @@
 import requests
 import os
+import json
 import pafy
 
-with open("apikey") as f:
-    yt_api_key = f.read()
+with open("data/apikeys.json") as f:
+    yt_api_key = json.load(f)["youtube"]
 
 api_uri = "https://www.googleapis.com/youtube/v3/search?part=snippet&q={}&type=video&key={}"
 
@@ -43,6 +44,13 @@ def get_video_info(query: str, title_append="", num_results=1, thumb_quality=0) 
 
     # Call to youtube snippet API
     call_result = requests.get(api_uri.format(query, yt_api_key)).json()
+
+    if call_result["pageInfo"]["totalResults"] == 0:
+        raise LookupError("No results found matching query.")
+
+    if call_result["pageInfo"]["totalResults"] < num_results:
+        num_results = call_result["pageInfo"]["totalResults"]
+        print("[NOTIFY] Total Youtube results less than desired input. Found {} video(s).".format(num_results))
 
     # Store gathered information in a dict
     result_dict = {}
